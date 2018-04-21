@@ -1,29 +1,19 @@
-import React, { Component } from 'react';
-import ListConstacts from './ListContacts';
-
+import React, { Component } from 'react'
+import ListConstacts from './ListContacts'
+import * as ContactsAPI from './utils/ContactsAPI'
 
 class App extends Component {
   state = {
-      contacts : [
-      {
-        id: 'tyler',
-        name: 'Tyler McGinnis',
-        handle: '@tylermcginnis',
-        avatarURL: 'http://localhost:5001/tyler.jpg'
-      },
-      {
-        id: 'karen',
-        name: 'Karen Isgrigg',
-        handle: '@karen_isgrigg',
-        avatarURL: 'http://localhost:5001/karen.jpg'
-      },
-      {
-        id: 'richard',
-        name: 'Richard Kalehoff',
-        handle: '@richardkalehoff',
-        avatarURL: 'http://localhost:5001/richard.jpg'
-      },  
-    ]
+      contacts : []
+  }
+
+  componentDidMount() {
+    ContactsAPI.getAll()
+      .then((contacts) => {
+        this.setState(() => ({
+          contacts
+        }))
+      })
   }
 
   removeContact = (contact) => {
@@ -32,6 +22,8 @@ class App extends Component {
         return c.id !== contact.id
       })
     }))
+
+    ContactsAPI.remove(contact)
   }
 
   render() {
@@ -44,4 +36,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App
